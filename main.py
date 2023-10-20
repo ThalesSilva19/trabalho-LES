@@ -1,25 +1,25 @@
 import socket
 
-def obter_protocolo(porta):
+def get_protocol(port):
     try:
-        with open('/etc/services', 'r') as arquivo:
-            for linha in arquivo:
-                if str(porta) in linha:
-                    return linha.split()[1]
+        file = open('/etc/services', 'r')
+        for row in file:
+            if str(port) in row:
+                return row.split()[1]
     except FileNotFoundError:
-        return "Protocolo não encontrado"
+        return "Protocol not found"
 
-def scanner_de_portas(endereco, portas):
-    for porta in portas:
-        cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        cliente.settimeout(0.1)
-        codigo = cliente.connect_ex((endereco, porta))
-        if codigo == 0:
-            protocolo = obter_protocolo(porta)
-            print(f"Porta {porta} está aberta. Protocolo: {protocolo}")
+def ports_scanner(address, ports):
+    for port in ports:
+        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client.settimeout(0.1)
+        code = client.connect_ex((address, port))
+        if code == 0:
+            protocol = get_protocol(port)
+            print "Port", port, "is opened. Protocol:", protocol
 
 if __name__ == "__main__":
-    endereco_alvo = '127.0.0.1'  # Altere para o endereço que você deseja escanear
-    portas_alvo = [80, 443, 22, 25]  # Adicione as portas que você deseja escanear
+    target_address = '127.0.0.1'
+    target_ports = [i for i in range(10000)]
 
-    scanner_de_portas(endereco_alvo, portas_alvo)
+    ports_scanner(target_address, target_ports)
